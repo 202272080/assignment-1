@@ -39,7 +39,7 @@ body {
 
 /* ===== NAVIGATION STYLES ===== */
 #navbar {
-    background-color: var(--card-bg);
+    /* background-color removed as scroll effect is not needed */
     box-shadow: var(--shadow);
     position: fixed;
     width: 100%;

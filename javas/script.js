@@ -33,8 +33,7 @@ function initPortfolio() {
     // 4. SMOOTH SCROLLING
     setupSmoothScrolling();
     
-    // 5. NAVBAR SCROLL EFFECT
-    setupNavbarScroll();
+    // ...existing code...
     
     console.log('🎉 All features initialized');
 }
@@ -153,18 +152,7 @@ function setupSmoothScrolling() {
 }
 
 // NAVBAR SCROLL FUNCTION
-function setupNavbarScroll() {
-    const navbar = document.getElementById('navbar');
-    if (navbar) {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 100) {
-                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            } else {
-                navbar.style.background = '';
-            }
-        });
-    }
-}
+// ...existing code...
 
 // Load saved theme on page load
 function loadSavedTheme() {
