@@ -1,140 +1,179 @@
-// Debug: Check if JavaScript is loading
-console.log('🎯 JavaScript is loading!');
+// SIMPLE, BULLETPROOF VERSION - GUARANTEED TO WORK
 
-// Wait for DOM to fully load
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ DOM is ready!');
+// Debug message to confirm script is loading
+console.log('🎯 script.js is loading!');
+
+// Wait for page to fully load
+window.addEventListener('load', function() {
+    console.log('✅ Page fully loaded');
+    initPortfolio();
+});
+
+function initPortfolio() {
+    console.log('🚀 Initializing portfolio features');
     
-    // ===== 1. THEME TOGGLE =====
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
+    // 1. THEME TOGGLE - SIMPLE VERSION
+    const themeButton = document.getElementById('theme-toggle');
+    console.log('🔘 Theme button:', themeButton);
     
-    console.log('🔘 Theme button found:', themeToggle);
-    
-    // Set initial button text
-    themeToggle.textContent = 'Dark Mode';
-    
-    themeToggle.addEventListener('click', function() {
-        console.log('🎨 Theme button clicked!');
-        
-        // Toggle dark theme
-        body.classList.toggle('dark-theme');
-        
-        // Update button text
-        if (body.classList.contains('dark-theme')) {
-            themeToggle.textContent = 'Light Mode';
-            console.log('🌙 Dark mode activated');
-        } else {
-            themeToggle.textContent = 'Dark Mode';
-            console.log('☀️ Light mode activated');
-        }
-        
-        // Save to localStorage
-        localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark-theme' : '');
-    });
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark-theme') {
-        body.classList.add('dark-theme');
-        themeToggle.textContent = 'Light Mode';
-        console.log('📁 Loaded saved dark theme');
+    if (themeButton) {
+        themeButton.addEventListener('click', toggleTheme);
+        // Set initial text
+        themeButton.textContent = document.body.classList.contains('dark-theme') ? 'Light Mode' : 'Dark Mode';
+    } else {
+        console.error('❌ Theme button not found!');
     }
     
-    // ===== 2. TIME-BASED GREETING =====
-    function addGreeting() {
-        const hour = new Date().getHours();
-        let greeting;
-        
-        if (hour < 12) {
-            greeting = "🌞 Good morning!";
-        } else if (hour < 18) {
-            greeting = "🌅 Good afternoon!";
-        } else {
-            greeting = "🌙 Good evening!";
-        }
-        
+    // 2. TIME GREETING - SIMPLE VERSION
+    addTimeGreeting();
+    
+    // 3. FORM VALIDATION - SIMPLE VERSION
+    setupFormValidation();
+    
+    // 4. SMOOTH SCROLLING
+    setupSmoothScrolling();
+    
+    // 5. NAVBAR SCROLL EFFECT
+    setupNavbarScroll();
+    
+    console.log('🎉 All features initialized');
+}
+
+// THEME TOGGLE FUNCTION
+function toggleTheme() {
+    console.log('🎨 Toggling theme');
+    document.body.classList.toggle('dark-theme');
+    
+    const themeButton = document.getElementById('theme-toggle');
+    if (themeButton) {
+        themeButton.textContent = document.body.classList.contains('dark-theme') ? 'Light Mode' : 'Dark Mode';
+    }
+    
+    // Save preference
+    localStorage.setItem('portfolio-theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+}
+
+// TIME GREETING FUNCTION
+function addTimeGreeting() {
+    const hour = new Date().getHours();
+    let greeting;
+    
+    if (hour < 12) greeting = "🌞 Good morning!";
+    else if (hour < 18) greeting = "🌅 Good afternoon!";
+    else greeting = "🌙 Good evening!";
+    
+    const heroSection = document.querySelector('#hero');
+    if (heroSection) {
         // Remove existing greeting if any
-        const oldGreeting = document.getElementById('time-greeting');
+        const oldGreeting = document.getElementById('dynamic-greeting');
         if (oldGreeting) oldGreeting.remove();
         
-        // Create and add greeting
+        // Create new greeting
         const greetingElement = document.createElement('div');
-        greetingElement.id = 'time-greeting';
+        greetingElement.id = 'dynamic-greeting';
         greetingElement.textContent = greeting;
         greetingElement.style.cssText = `
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
-            margin-top: 10px;
+            margin: 10px 0;
             color: #ffd166;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         `;
         
-        // Add to hero section
-        const heroContent = document.querySelector('.hero-content');
-        if (heroContent) {
-            heroContent.appendChild(greetingElement);
+        // Insert after the tagline
+        const tagline = heroSection.querySelector('p');
+        if (tagline) {
+            tagline.parentNode.insertBefore(greetingElement, tagline.nextSibling);
             console.log('⏰ Greeting added:', greeting);
         }
     }
+}
+
+// FORM VALIDATION FUNCTION
+function setupFormValidation() {
+    const form = document.getElementById('contact-form');
+    console.log('📝 Contact form:', form);
     
-    addGreeting();
-    
-    // ===== 3. FORM VALIDATION =====
-    const contactForm = document.getElementById('contact-form');
-    console.log('📝 Contact form found:', contactForm);
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+    if (form) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log('📤 Form submission started');
+            console.log('📤 Form submitted');
             
-            // Get form values
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const message = document.getElementById('message').value.trim();
             
-            console.log('Form data:', { name, email, message });
-            
-            // Validation
-            if (!name || !email || !message) {
-                alert('❌ Please fill in all fields');
+            // Simple validation
+            if (!name) {
+                alert('❌ Please enter your name');
                 return;
             }
             
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('❌ Please enter a valid email address (e.g., example@email.com)');
+            if (!email) {
+                alert('❌ Please enter your email');
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                alert('❌ Please enter a valid email address');
+                return;
+            }
+            
+            if (!message) {
+                alert('❌ Please enter a message');
                 return;
             }
             
             // Success
             alert(`✅ Thank you, ${name}! Your message has been sent.`);
-            console.log('✅ Form submitted successfully');
-            
-            // Reset form
-            contactForm.reset();
+            form.reset();
         });
     }
+}
+
+// SMOOTH SCROLLING FUNCTION
+function setupSmoothScrolling() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    console.log('🛷 Navigation links found:', links.length);
     
-    // ===== 4. SMOOTH SCROLLING =====
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
+    links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 70,
-                    behavior: 'smooth'
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
-                console.log('🛷 Smooth scrolling to:', targetId);
             }
         });
     });
-    
-   
-});
+}
+
+// NAVBAR SCROLL FUNCTION
+function setupNavbarScroll() {
+    const navbar = document.getElementById('navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            } else {
+                navbar.style.background = '';
+            }
+        });
+    }
+}
+
+// Load saved theme on page load
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('portfolio-theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        console.log('🌙 Loaded dark theme from storage');
+    }
+}
+
+// Initialize saved theme when script loads
+loadSavedTheme();
